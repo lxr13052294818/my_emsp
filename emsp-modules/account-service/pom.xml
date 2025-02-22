@@ -8,17 +8,9 @@
     <version>${revision}</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
+
   <groupId>com.volvo</groupId>
   <artifactId>account-service</artifactId>
   <version>${revision}</version>
   <name>account-service</name>
-  <url>http://maven.apache.org</url>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
 </project>
