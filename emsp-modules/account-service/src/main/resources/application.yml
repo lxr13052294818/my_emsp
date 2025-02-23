@@ -1,0 +1,3 @@
+spring:
+  profiles:
+    active: dev  # 默认使用开发环境配置，可以改为 prod 切换到生产环境配置

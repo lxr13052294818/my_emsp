@@ -1,0 +1,20 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: lxr123$!
+    ports:
+      - "3306:3306"
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  nacos:
+    image: nacos/nacos-server:latest
+    ports:
+      - "8848:8848"
+  jenkins:
+    image: jenkins/jenkins:lts
+    ports:
+      - "8080:8080"
