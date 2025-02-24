@@ -4,12 +4,12 @@
   <parent>
     <groupId>com.volvo</groupId>
     <artifactId>emsp</artifactId>
-    <version>${revision}</version>
+    <version>1.0.1-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>account-api</artifactId>
-  <version>${revision}</version>
+  <version>1.0.1-SNAPSHOT</version>
   <name>account-api</name>
 </project>

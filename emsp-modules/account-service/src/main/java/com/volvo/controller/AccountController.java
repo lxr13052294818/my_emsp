@@ -2,6 +2,7 @@ package com.volvo.controller;
 
 import com.volvo.model.dto.AccountDTO;
 import com.volvo.model.vo.AccountVO;
+import com.volvo.model.vo.RR;
 import com.volvo.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,9 @@ public class AccountController {
      * @param accountDTO
      */
     @PostMapping
-    public void createAccount(@RequestBody AccountDTO accountDTO) {
+    public RR<String> createAccount(@RequestBody AccountDTO accountDTO) {
         accountService.createAccount(accountDTO);
+        return RR.ok("创建成功");
     }
 
     /**
@@ -36,8 +38,8 @@ public class AccountController {
      * @return
      */
     @GetMapping("/{id}")
-    public AccountVO getAccount(@PathVariable Long id) {
-        return accountService.getAccount(id);
+    public RR<AccountVO> getAccount(@PathVariable Long id) {
+        return RR.ok(accountService.getAccount(id));
     }
 
     /**
@@ -47,7 +49,8 @@ public class AccountController {
      * @param status
      */
     @PutMapping("/{id}/status")
-    public void changeAccountStatus(@PathVariable Long id, @RequestParam String status) {
+    public RR<String> changeAccountStatus(@PathVariable Long id, @RequestParam String status) {
         accountService.changeAccountStatus(id, status);
+        return RR.ok("更改成功");
     }
 }

@@ -5,12 +5,12 @@
   <parent>
     <groupId>com.volvo</groupId>
     <artifactId>emsp</artifactId>
-    <version>${revision}</version>
+    <version>1.0.1-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
   <groupId>com.volvo</groupId>
   <artifactId>card-service</artifactId>
-  <version>${revision}</version>
+  <version>1.0.1-SNAPSHOT</version>
   <name>card-service</name>
 </project>
