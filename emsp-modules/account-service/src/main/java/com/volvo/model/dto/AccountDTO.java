@@ -1,13 +1,10 @@
 package com.volvo.model.dto;
 
-import com.volvo.entity.Account;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.factory.Mappers;
 
 /**
  * 描述:
@@ -16,6 +13,7 @@ import org.mapstruct.factory.Mappers;
  * @date 2025/2/23
  */
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountDTO {
@@ -28,15 +26,4 @@ public class AccountDTO {
 
     @ApiModelProperty(value = "状态", example = "Active")
     private String status;
-
-    @Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
-    interface AccountDTOMapper {
-        AccountDTOMapper INSTANCE = Mappers.getMapper(AccountDTOMapper.class);
-
-        Account toAccount(AccountDTO dto);
-    }
-
-    public static Account toAccount(AccountDTO dto) {
-        return AccountDTOMapper.INSTANCE.toAccount(dto);
-    }
 }

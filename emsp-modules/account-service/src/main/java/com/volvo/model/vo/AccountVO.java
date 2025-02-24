@@ -1,13 +1,10 @@
 package com.volvo.model.vo;
 
-import com.volvo.entity.Account;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.factory.Mappers;
 
 /**
  * 描述:
@@ -16,6 +13,7 @@ import org.mapstruct.factory.Mappers;
  * @date 2025/2/23
  */
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class AccountVO {
@@ -28,15 +26,4 @@ public class AccountVO {
 
     @ApiModelProperty(value = "状态", example = "Active")
     private String status;
-
-    @Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
-    interface AccountMapper {
-        AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
-
-        AccountVO toAccountVO(Account dto);
-    }
-
-    public static AccountVO toAccountVO(Account dto) {
-        return AccountMapper.INSTANCE.toAccountVO(dto);
-    }
 }
