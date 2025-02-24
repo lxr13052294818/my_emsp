@@ -4,7 +4,6 @@ import com.volvo.entity.Account;
 import com.volvo.mapper.AccountMapper;
 import com.volvo.model.dto.AccountDTO;
 import com.volvo.model.vo.AccountVO;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +31,9 @@ public class AccountService {
     // 查询账户
     public AccountVO getAccount(Long id) {
         Account account = accountMapper.selectById(id);
-
+        if (account == null) {
+            return null;
+        }
         // 转 AccountDTO
         return AccountVO.toAccountVO(account);
     }

@@ -1,5 +1,5 @@
-FROM openjdk:8-jdk-alpine
+FROM registry.cn-beijing.aliyuncs.com/platform-registry/java:8
 
-COPY target/my-service-1.0.1.jar /app/my-service.jar
+COPY target/account-service-1.0.1-SNAPSHOT.jar /app/account-service.jar
 
-ENTRYPOINT ["java", "-jar", "/app/my-service.jar"]
+ENTRYPOINT ["java", "-jar", "/app/account-service.jar"]
