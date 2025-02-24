@@ -7,23 +7,26 @@ spring:
     username: root
     password: lxr123$!
     driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update  # 开发环境可自动更新数据库表结构
-    database-platform: org.hibernate.dialect.MySQL5Dialect  # 数据库方言
-  mybatis-plus:
-    mapper-locations: classpath:/mapper/*.xml  # MyBatis 的 XML 映射文件路径
-    type-aliases-package: com.volvo.accountservice.entity  # 指定实体类包路径
-    configuration:
-      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 控制台打印 SQL
+
+mybatis-plus:
+  global-config:
+    db-config:
+      insert-strategy: ignored
+      update-strategy: ignored
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 控制台打印 SQL
+  type-aliases-package: com.volvo.*.entity;
+  mapper-locations:
+    - classpath*:com/**/mapper/**/*Mapper.xml
 
 cloud:
   nacos:
     discovery:
       server-addr: localhost:8848  # Nacos 本地开发环境
-      service: account-service-dev
+      service: account-service
       metadata:
-        version: 1.0.0  # 开发环境服务版本
+        version: 1.0.1  # 开发环境服务版本
 
 logging:
   level:
