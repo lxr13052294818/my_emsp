@@ -5,20 +5,26 @@ import com.volvo.model.vo.AccountVO;
 import com.volvo.model.vo.RR;
 import com.volvo.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 描述:
+ * 描述: 账户管理
  *
  * @author lxr
  * @date 2025/2/23
  */
 @RestController
+@RefreshScope
 @RequestMapping("/api/account")
 public class AccountController {
 
     @Autowired
     private AccountService accountService;
+
+    @Value("${spring.datasource.url}")
+    private String url;
 
     /**
      * 创建账户
@@ -39,6 +45,7 @@ public class AccountController {
      */
     @GetMapping("/{id}")
     public RR<AccountVO> getAccount(@PathVariable Long id) {
+        System.out.println("url===============" + url);
         return RR.ok(accountService.getAccount(id));
     }
 

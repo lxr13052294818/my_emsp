@@ -1,28 +1,15 @@
 server:
-  port: ${SERVER_PORT:8081}
+  port: ${SERVER_PORT:8888}
 spring:
   application:
-    name: ${APPLICATION_NAME:account-service}
+    name: ${APPLICATION_NAME:gateway-service}
   profiles:
     active: ${PROFILES_ACTIVE:nacos}
-  main:
-    #该配置放在bootstrap中，在使用nacos的情况下会报错
-    allow-circular-references: true
-    allow-bean-definition-overriding: true
-    servlet:
-      multipart:
-        #启用分段上传支持
-        enabled: true
-        #文件上传限制大小
-        max-file-size: 150MB
-        #请求数据限制大小
-        max-request-size: 150MB
   cloud:
     nacos:
       discovery:
         enabled: ${NACOS_DISCOVERY_ENABLED:true}
         server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
-        service: account-service
         username: ${NACOS_USERNAME:nacos}
         password: ${NACOS_PASSWORD:nacos}
         namespace: ${NACOS_NAMESPACE:emsp}
@@ -36,9 +23,3 @@ spring:
         group: ${NACOS_GROUP:dev}
         refreshable: true
         file-extension: yaml
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: refresh, health, info
