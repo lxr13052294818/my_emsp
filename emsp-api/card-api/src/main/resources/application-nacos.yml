@@ -1,0 +1,51 @@
+spring:
+  datasource:
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/my_emsp?useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai}
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:lxr123$!}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    database: ${REDIS_DATABASE:0}
+  redisson:
+    config:
+      single:
+        address: ${REDIS_HOST:localhost}:${REDIS_PORT:6379}
+
+knife4j:
+  enable: true
+  setting:
+    customCode: 200
+  openapi:
+    title: 账户服务
+    description: 账户服务
+    version: 1.X
+  production: ${knife4j_production:true}
+  basic:
+    #否是开启BasicHttp验证
+    enable: true
+    #basic 用户名，自定义即可
+    username: ${KEIFE4J_USERNAME:admin@lxr}
+    #basic 密码,自定义即可
+    password: ${KEIFE4J_PASSWORD:admin@lxr}
+
+mybatis-plus:
+  global-config:
+    db-config:
+      insert-strategy: ignored
+      update-strategy: ignored
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: ${LOG_IMPL:org.apache.ibatis.logging.stdout.StdOutImpl}
+  type-aliases-package: com.volvo.*.entity;
+  mapper-locations:
+    - classpath*:com/**/mapper/**/*Mapper.xml
+
+logging:
+  level:
+    org.springframework.web: INFO  # 开发环境日志级别设置为 INFO
+    com.volvo.accountservice: DEBUG  # 开发环境开启 DEBUG 级别的日志
+  file:
+    name: account-service-dev.log  # 开发环境日志文件名
+

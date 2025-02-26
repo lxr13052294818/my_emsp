@@ -4,7 +4,7 @@ package com.volvo;
  * Hello world!
  *
  */
-public class App 
+public class CardServiceApplication
 {
     public static void main( String[] args )
     {
