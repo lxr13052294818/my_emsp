@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.volvo</groupId>
         <artifactId>emsp</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>${revision}</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 

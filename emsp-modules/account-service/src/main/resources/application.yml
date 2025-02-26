@@ -30,12 +30,10 @@ spring:
       config:
         enabled: ${NACOS_CONFIG_ENABLED:true}
         server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
-        username: ${NACOS_USERNAME:nacos}
-        password: ${NACOS_PASSWORD:nacos}
         namespace: ${NACOS_NAMESPACE:emsp}
         group: ${NACOS_GROUP:dev}
+        data-id: account-service-nacos.yaml
         refreshable: true
-        file-extension: yaml
 
 management:
   endpoints:
