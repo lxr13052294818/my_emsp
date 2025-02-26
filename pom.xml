@@ -157,14 +157,6 @@
         </repository>
     </distributionManagement>
 
-    <servers>
-        <server>
-            <id>repo-carze</id>
-            <username>67bbb5908bb0a312edf191b3</username>
-            <password>)Uh=k[cOQ]Y7</password>
-        </server>
-    </servers>
-
     <repositories>
         <repository>
             <id>repo-carze</id>
