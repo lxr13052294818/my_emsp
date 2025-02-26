@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RefreshScope
-@RequestMapping("/api/account")
+@RequestMapping("/account")
 public class AccountController {
 
     @Autowired
