@@ -21,7 +21,7 @@ jobs:
 
       - name: Build with Maven for gateway-service
         run: |
-          cd emsp-base/gateway-service  # 切换到 gateway-service 目录
+          cd emsp-base/gateway-service
           mvn clean package -DskipTests  # 构建 gateway-service
 
       - name: Build with Maven for account-service
