@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum AccountStatus {
+public enum CardStatus {
     ACTIVE("Active"),
     INACTIVE("Inactive"),
     SUSPENDED("Suspended");

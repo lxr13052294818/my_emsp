@@ -14,8 +14,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  */
 @SpringBootApplication(scanBasePackages = "com.volvo")
 @EnableDiscoveryClient
-@EnableFeignClients
 @MapperScan("com.volvo.**.mapper")
+@EnableFeignClients(basePackages = "com.volvo.client")
 public class AccountServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(AccountServiceApplication.class, args);

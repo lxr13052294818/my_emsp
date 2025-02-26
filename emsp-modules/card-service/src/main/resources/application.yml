@@ -1,8 +1,8 @@
 server:
-  port: ${SERVER_PORT:8081}
+  port: ${SERVER_PORT:8082}
 spring:
   application:
-    name: ${APPLICATION_NAME:account-service}
+    name: ${APPLICATION_NAME:card-service}
   profiles:
     active: ${PROFILES_ACTIVE:nacos}
   main:
@@ -32,7 +32,6 @@ spring:
         server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
         namespace: ${NACOS_NAMESPACE:emsp}
         group: ${NACOS_GROUP:dev}
-        data-id: account-service-nacos.yaml
         refreshable: true
 
 management:

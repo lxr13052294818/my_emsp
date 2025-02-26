@@ -49,3 +49,6 @@ logging:
   file:
     name: account-service-dev.log  # 开发环境日志文件名
 
+feign:
+  hystrix:
+    enabled: true
