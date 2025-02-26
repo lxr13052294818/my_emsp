@@ -1,9 +1,10 @@
 package com.volvo.client;
 
 import com.volvo.model.CardDTO;
+import com.volvo.model.vo.RR;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * 描述:
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  */
 @FeignClient(name = "card-service", path = "/card")
 public interface CardClient {
-    @GetMapping("/{id}")
-    CardDTO getCarById(@PathVariable("id") String id);
+
+    @PostMapping
+    RR<String> createCard(@RequestBody CardDTO cardDTO);
 }
