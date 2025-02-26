@@ -3,18 +3,61 @@ services:
   mysql:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: lxr123$!
+      MYSQL_ROOT_PASSWORD: "lxr123$!"
     ports:
       - "3306:3306"
+    networks:
+      - emsp-network
+
   redis:
-    image: redis:latest
+    image: redis:6.2
     ports:
       - "6379:6379"
+    networks:
+      - emsp-network
+
   nacos:
-    image: nacos/nacos-server:latest
+    image: nacos/nacos-server:2.0.3
     ports:
       - "8848:8848"
+    networks:
+      - emsp-network
+
   jenkins:
     image: jenkins/jenkins:lts
     ports:
       - "8080:8080"
+    networks:
+      - emsp-network
+
+  gateway-service:
+    image: liuxingrui/emsp-gateway-service:latest
+    container_name: gateway-service
+    ports:
+      - "8080:8080"
+    environment:
+      - PROFILES_ACTIVE=nacos
+    networks:
+      - emsp-network
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+
+  account-service:
+    image: liuxingrui/emsp-account-service:latest
+    container_name: account-service
+    ports:
+      - "8081:8080"
+    environment:
+      - PROFILES_ACTIVE=nacos
+    networks:
+      - emsp-network
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+
+networks:
+  emsp-network:
+    driver: bridge

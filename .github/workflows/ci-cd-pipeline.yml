@@ -3,39 +3,54 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - main  # 当推送到 main 分支时触发
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # 使用 GitHub 提供的 Ubuntu 运行环境
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # 检出代码
 
-      - name: Set up JDK
-        uses: actions/setup-java@v2
+      - name: Set up JDK 8
+        uses: actions/setup-java@v3
         with:
-          java-version: '1.8'
+          java-version: '8'
+          distribution: 'temurin'  # 设置 Java 版本为 8，使用 OpenJDK
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Build with Maven for gateway-service
+        run: |
+          cd emsp-base/gateway-service  # 切换到 gateway-service 目录
+          mvn clean package -DskipTests  # 构建 gateway-service
 
-      - name: Build Docker image
-        run: docker build -t your-docker-image-name .
+      - name: Build with Maven for account-service
+        run: |
+          cd emsp-modules/account-service  # 切换到 account-service 目录
+          mvn clean package -DskipTests  # 构建 account-service
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Docker image for gateway-service
+        run: |
+          cd emsp-base/gateway-service
+          docker build -f ./Dockerfile -t emsp-gateway-service:1.0.1 .
+          docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
+          docker push liuxingrui/emsp-gateway-service:1.0.1
 
-      - name: Push Docker image
-        run: docker push your-docker-image-name
+      - name: Build Docker image for account-service
+        run: |
+          cd emsp-modules/account-service
+          docker build -f ./Dockerfile -t emsp-account-service:1.0.1 .
+          docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
+          docker push liuxingrui/emsp-account-service:1.0.1
 
-      - name: Deploy to Azure
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: your-azure-app-name
-          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
-          package: your-docker-image-name
+      - name: Deploy to local Docker Desktop (gateway-service)
+        run: |
+          docker pull liuxingrui/emsp-gateway-service:1.0.1
+          docker tag liuxingrui/emsp-gateway-service:1.0.1 gateway-service:latest
+          docker-compose -f docker-compose.yml up -d
+
+      - name: Deploy to local Docker Desktop (account-service)
+        run: |
+          docker pull liuxingrui/emsp-account-service:1.0.1
+          docker tag liuxingrui/emsp-account-service:1.0.1 account-service:latest
+          docker-compose -f docker-compose.yml up -d
