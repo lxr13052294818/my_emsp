@@ -19,38 +19,60 @@ jobs:
           java-version: '8'
           distribution: 'temurin'  # 设置 Java 版本为 8，使用 OpenJDK
 
-      - name: Build with Maven for gateway-service
+      # 配置 Maven 使用阿里云的仓库
+      - name: Set up Maven settings for Aliyun
         run: |
-          cd emsp-base/gateway-service
-          mvn clean package -DskipTests  # 构建 gateway-service
+          mkdir -p ~/.m2
+          echo "<settings>
+            <servers>
+              <server>
+                <id>repo-carze</id>
+                <username>${{ secrets.ALIYUN_USERNAME }}</username>
+                <password>${{ secrets.ALIYUN_PASSWORD }}</password>
+              </server>
+            </servers>
+            <mirrors>
+              <mirror>
+                <id>aliyun-central</id>
+                <mirrorOf>central</mirrorOf>
+                <url>https://maven.aliyun.com/repository/public</url>
+                <blocked>false</blocked>
+              </mirror>
+            </mirrors>
+          </settings>" > ~/.m2/settings.xml
 
-      - name: Build with Maven for account-service
-        run: |
-          cd emsp-modules/account-service  # 切换到 account-service 目录
-          mvn clean package -DskipTests  # 构建 account-service
+  - name: Build with Maven for gateway-service
+    run: |
+      cd emsp-base/gateway-service
+      mvn clean package -DskipTests  # 构建 gateway-service
 
-      - name: Build Docker image for gateway-service
-        run: |
-          cd emsp-base/gateway-service
-          docker build -f ./Dockerfile -t emsp-gateway-service:1.0.1 .
-          docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
-          docker push liuxingrui/emsp-gateway-service:1.0.1
+  - name: Build with Maven for account-service
+    run: |
+      cd emsp-modules/account-service  # 切换到 account-service 目录
+      mvn clean package -DskipTests  # 构建 account-service
 
-      - name: Build Docker image for account-service
-        run: |
-          cd emsp-modules/account-service
-          docker build -f ./Dockerfile -t emsp-account-service:1.0.1 .
-          docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
-          docker push liuxingrui/emsp-account-service:1.0.1
+  - name: Build Docker image for gateway-service
+    run: |
+      cd emsp-base/gateway-service
+      docker build -f ./Dockerfile -t emsp-gateway-service:1.0.1 .
+      docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
+      docker push liuxingrui/emsp-gateway-service:1.0.1
 
-      - name: Deploy to local Docker Desktop (gateway-service)
-        run: |
-          docker pull liuxingrui/emsp-gateway-service:1.0.1
-          docker tag liuxingrui/emsp-gateway-service:1.0.1 gateway-service:latest
-          docker-compose -f docker-compose.yml up -d
+  - name: Build Docker image for account-service
+    run: |
+      cd emsp-modules/account-service
+      docker build -f ./Dockerfile -t emsp-account-service:1.0.1 .
+      docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
+      docker push liuxingrui/emsp-account-service:1.0.1
 
-      - name: Deploy to local Docker Desktop (account-service)
-        run: |
-          docker pull liuxingrui/emsp-account-service:1.0.1
-          docker tag liuxingrui/emsp-account-service:1.0.1 account-service:latest
-          docker-compose -f docker-compose.yml up -d
+  - name: Deploy to local Docker Desktop (gateway-service)
+    run: |
+      docker pull liuxingrui/emsp-gateway-service:1.0.1
+      docker tag liuxingrui/emsp-gateway-service:1.0.1 gateway-service:latest
+      docker-compose -f docker-compose.yml up -d
+
+  - name: Deploy to local Docker Desktop (account-service)
+    run: |
+      docker pull liuxingrui/emsp-account-service:1.0.1
+      docker tag liuxingrui/emsp-account-service:1.0.1 account-service:latest
+      docker-compose -f docker-compose.yml up -d
