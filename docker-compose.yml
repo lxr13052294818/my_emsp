@@ -31,7 +31,7 @@ services:
       - emsp-network
 
   gateway-service:
-    image: liuxingrui/emsp-gateway-service:latest
+    image: emsp-gateway-service:latest
     container_name: gateway-service
     ports:
       - "8080:8080"
@@ -45,7 +45,7 @@ services:
       - nacos
 
   account-service:
-    image: liuxingrui/emsp-account-service:latest
+    image: emsp-account-service:latest
     container_name: account-service
     ports:
       - "8081:8080"
