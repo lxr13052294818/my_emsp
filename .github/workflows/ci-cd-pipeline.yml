@@ -53,16 +53,18 @@ jobs:
 
       - name: Build Docker image for gateway-service
         run: |
+          echo "DOCKER_USERNAME=======================: ${{ secrets.DOCKER_USERNAME }}"
+          echo "DOCKER_PASSWORD=======================: ${{ secrets.DOCKER_PASSWORD }}"
           cd emsp-base/gateway-service
           docker build -f ./Dockerfile -t emsp-gateway-service:1.0.1 .
-          docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
+          docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }} docker.io
           docker push liuxingrui/emsp-gateway-service:1.0.1
 
       - name: Build Docker image for account-service
         run: |
           cd emsp-modules/account-service
           docker build -f ./Dockerfile -t emsp-account-service:1.0.1 .
-          docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
+          docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }} docker.io
           docker push liuxingrui/emsp-account-service:1.0.1
 
       - name: Deploy to local Docker Desktop (gateway-service)
