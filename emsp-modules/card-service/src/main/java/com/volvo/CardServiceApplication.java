@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * 卡片管理
  *
  * @author lxr
- * @date 2025/2/23
+ * @date 2025/2/23 
  */
 @SpringBootApplication(scanBasePackages = "com.volvo")
 @EnableDiscoveryClient
