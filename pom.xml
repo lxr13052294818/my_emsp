@@ -30,34 +30,49 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.volvo</groupId>
+                <artifactId>emsp-dependencies</artifactId>
+                <version>${revision}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!--            <dependency>-->
-            <!--                <groupId>com.volvo</groupId>-->
-            <!--                <artifactId>emsp-dependencies</artifactId>-->
-            <!--                <version>${project.version}</version>-->
+            <!--                <groupId>org.springframework.boot</groupId>-->
+            <!--                <artifactId>spring-boot-dependencies</artifactId>-->
+            <!--                <version>2.6.13</version>-->
             <!--                <type>pom</type>-->
             <!--                <scope>import</scope>-->
             <!--            </dependency>-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.6.13</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.alibaba.cloud</groupId>
-                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>2021.1</version> <!-- 根据需要选择版本 -->
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2021.0.5</version> <!-- 根据需要选择版本 -->
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
+            <!--            <dependency>-->
+            <!--                <groupId>com.alibaba.cloud</groupId>-->
+            <!--                <artifactId>spring-cloud-alibaba-dependencies</artifactId>-->
+            <!--                <version>2021.1</version> &lt;!&ndash; 根据需要选择版本 &ndash;&gt;-->
+            <!--                <type>pom</type>-->
+            <!--                <scope>import</scope>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>org.springframework.cloud</groupId>-->
+            <!--                <artifactId>spring-cloud-dependencies</artifactId>-->
+            <!--                <version>2021.0.5</version> &lt;!&ndash; 根据需要选择版本 &ndash;&gt;-->
+            <!--                <type>pom</type>-->
+            <!--                <scope>import</scope>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.volvo</groupId>-->
+            <!--                <artifactId>emsp-common-tools</artifactId>-->
+            <!--                <version>${revision}</version>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.volvo</groupId>-->
+            <!--                <artifactId>account-api</artifactId>-->
+            <!--                <version>${revision}</version>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.volvo</groupId>-->
+            <!--                <artifactId>card-api</artifactId>-->
+            <!--                <version>${revision}</version>-->
+            <!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
@@ -118,18 +133,6 @@
             <artifactId>swagger-annotations</artifactId>
             <version>1.5.22</version>
         </dependency>
-        <dependency>
-            <groupId>com.volvo</groupId>
-            <artifactId>emsp-common-tools</artifactId>
-            <version>${revision}</version>
-            <!--排除自己-->
-            <exclusions>
-                <exclusion>
-                    <groupId>com.volvo</groupId>
-                    <artifactId>emsp-common-tools</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
     </dependencies>
 
     <build>
@@ -168,7 +171,7 @@
             <id>repo-carze</id>
             <url>https://packages.aliyun.com/67bbb7860cd6bac4bf6209ad/maven/repo-carze</url>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
             </releases>
             <snapshots>
@@ -179,7 +182,6 @@
     </repositories>
 
     <modules>
-<!--        <module>emsp-common/emsp-common-tools</module>-->
         <module>emsp-base/gateway-service</module>
         <module>emsp-modules/account-service</module>
         <module>emsp-modules/card-service</module>

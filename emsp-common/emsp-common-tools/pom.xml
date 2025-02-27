@@ -16,6 +16,10 @@
     <packaging>jar</packaging>
     <name>emsp-common-tools</name>
 
+    <properties>
+        <revision>1.0.1-SNAPSHOT</revision>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -28,5 +32,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

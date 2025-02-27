@@ -13,6 +13,17 @@
     <version>${revision}</version>
     <name>account-api</name>
 
+    <properties>
+        <revision>1.0.1-SNAPSHOT</revision>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.volvo</groupId>
+            <artifactId>emsp-common-tools</artifactId>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
