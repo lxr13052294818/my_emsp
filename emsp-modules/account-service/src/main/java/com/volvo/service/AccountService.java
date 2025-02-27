@@ -7,6 +7,10 @@ import com.volvo.model.CardDTO;
 import com.volvo.model.dto.AccountDTO;
 import com.volvo.model.vo.AccountVO;
 import com.volvo.model.vo.RR;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +55,10 @@ public class AccountService {
      * @param id
      * @return
      */
+    @CircuitBreaker(name = "accountService", fallbackMethod = "getAccountFallback")
+    @Retry(name = "accountService")
+    @TimeLimiter(name = "accountService")
+    @RateLimiter(name = "accountService")
     public AccountVO getAccount(Long id) {
         CardDTO dto = CardDTO.builder().build();
         RR<String> rr = cardClient.createCard(dto);
@@ -64,6 +72,18 @@ public class AccountService {
         AccountVO accountVO = AccountVO.builder().build();
         BeanUtils.copyProperties(account, accountVO);
         return accountVO;
+    }
+
+    /**
+     * 获取账户回退
+     *
+     * @param id
+     * @param e
+     * @return
+     */
+    public AccountVO getAccountFallback(Long id, Throwable e) {
+        log.error("getAccountFallback: {}", e.getMessage());
+        return AccountVO.builder().build();
     }
 
     /**

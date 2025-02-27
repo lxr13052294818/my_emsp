@@ -47,21 +47,28 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!--            <dependency>-->
-            <!--                <groupId>com.volvo</groupId>-->
-            <!--                <artifactId>emsp-common-tools</artifactId>-->
-            <!--                <version>${revision}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>com.volvo</groupId>-->
-            <!--                <artifactId>account-api</artifactId>-->
-            <!--                <version>${revision}</version>-->
-            <!--            </dependency>-->
-            <!--            <dependency>-->
-            <!--                <groupId>com.volvo</groupId>-->
-            <!--                <artifactId>card-api</artifactId>-->
-            <!--                <version>${revision}</version>-->
-            <!--            </dependency>-->
+
+            <!-- resilience4j -->
+            <dependency>
+                <groupId>io.github.resilience4j</groupId>
+                <artifactId>resilience4j-spring-boot2</artifactId>
+                <version>1.7.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.resilience4j</groupId>
+                <artifactId>resilience4j-retry</artifactId>
+                <version>1.7.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.resilience4j</groupId>
+                <artifactId>resilience4j-ratelimiter</artifactId>
+                <version>1.7.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.resilience4j</groupId>
+                <artifactId>resilience4j-timelimiter</artifactId>
+                <version>1.7.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
