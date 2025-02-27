@@ -1,9 +1,12 @@
 package com.volvo.service;
 
+import com.volvo.client.CardClient;
 import com.volvo.entity.Account;
 import com.volvo.mapper.AccountMapper;
+import com.volvo.model.CardDTO;
 import com.volvo.model.dto.AccountDTO;
 import com.volvo.model.vo.AccountVO;
+import com.volvo.model.vo.RR;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +24,8 @@ public class AccountService {
 
     @Autowired
     private AccountMapper accountMapper;
-//    @Autowired
-//    private CardClient cardClient;
+    @Autowired
+    private CardClient cardClient;
 
     /**
      * 创建账户
@@ -49,6 +52,10 @@ public class AccountService {
      * @return
      */
     public AccountVO getAccount(Long id) {
+        CardDTO dto = CardDTO.builder().build();
+        RR<String> rr = cardClient.createCard(dto);
+        System.out.println("rr=================" + rr);
+
         Account account = accountMapper.selectById(id);
         if (account == null) {
             return null;

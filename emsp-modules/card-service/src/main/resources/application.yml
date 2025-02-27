@@ -22,7 +22,7 @@ spring:
       discovery:
         enabled: ${NACOS_DISCOVERY_ENABLED:true}
         server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
-        service: account-service
+        service: card-service
         username: ${NACOS_USERNAME:nacos}
         password: ${NACOS_PASSWORD:nacos}
         namespace: ${NACOS_NAMESPACE:emsp}
