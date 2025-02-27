@@ -77,11 +77,11 @@ jobs:
       - name: Deploy to local Docker Desktop (gateway-service)
         run: |
           docker pull liuxingrui/emsp-gateway-service:1.0.1
-          docker tag liuxingrui/emsp-gateway-service:1.0.1 gateway-service:latest
+          docker tag liuxingrui/emsp-gateway-service:1.0.1 emsp-gateway-service:latest
           docker-compose -f docker-compose.yml up -d
 
       - name: Deploy to local Docker Desktop (account-service)
         run: |
           docker pull liuxingrui/emsp-account-service:1.0.1
-          docker tag liuxingrui/emsp-account-service:1.0.1 account-service:latest
+          docker tag liuxingrui/emsp-account-service:1.0.1 emsp-account-service:latest
           docker-compose -f docker-compose.yml up -d
