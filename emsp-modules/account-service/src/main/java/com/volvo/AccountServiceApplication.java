@@ -12,7 +12,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @author lxr
  * @date 2025/2/23
  */
-@SpringBootApplication(scanBasePackages = "com.volvo")
+@SpringBootApplication(scanBasePackages = {"com.volvo"})
 @EnableDiscoveryClient
 @MapperScan("com.volvo.**.mapper")
 @EnableFeignClients(basePackages = "com.volvo.client")

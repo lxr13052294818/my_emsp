@@ -20,6 +20,7 @@
         <dependency>
             <groupId>com.volvo</groupId>
             <artifactId>emsp-common-tools</artifactId>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 </project>

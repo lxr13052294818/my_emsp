@@ -182,6 +182,9 @@
     </repositories>
 
     <modules>
+        <module>emsp-common/emsp-common-tools</module>
+        <module>emsp-api/account-api</module>
+        <module>emsp-api/card-api</module>
         <module>emsp-base/gateway-service</module>
         <module>emsp-modules/account-service</module>
         <module>emsp-modules/card-service</module>

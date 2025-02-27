@@ -47,21 +47,21 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>com.volvo</groupId>
-                <artifactId>emsp-common-tools</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.volvo</groupId>
-                <artifactId>account-api</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.volvo</groupId>
-                <artifactId>card-api</artifactId>
-                <version>${revision}</version>
-            </dependency>
+            <!--            <dependency>-->
+            <!--                <groupId>com.volvo</groupId>-->
+            <!--                <artifactId>emsp-common-tools</artifactId>-->
+            <!--                <version>${revision}</version>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.volvo</groupId>-->
+            <!--                <artifactId>account-api</artifactId>-->
+            <!--                <version>${revision}</version>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.volvo</groupId>-->
+            <!--                <artifactId>card-api</artifactId>-->
+            <!--                <version>${revision}</version>-->
+            <!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
