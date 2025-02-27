@@ -69,19 +69,21 @@ jobs:
           docker login --username='${{ secrets.DOCKER_USERNAME }}' --password='${{ secrets.DOCKER_PASSWORD }}'
           docker push liuxingrui/emsp-account-service:1.0.1
 
-      - name: Set up Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-
-      - name: Deploy to local Docker Desktop (gateway-service)
+      - name: Pull to local Docker Desktop (gateway-service)
         run: |
           docker pull liuxingrui/emsp-gateway-service:1.0.1
           docker tag liuxingrui/emsp-gateway-service:1.0.1 emsp-gateway-service:latest
-          docker-compose -f docker-compose.yml up -d
 
-      - name: Deploy to local Docker Desktop (account-service)
+      - name: Pull to local Docker Desktop (account-service)
         run: |
           docker pull liuxingrui/emsp-account-service:1.0.1
           docker tag liuxingrui/emsp-account-service:1.0.1 emsp-account-service:latest
+
+      - name: Set up Docker Compose
+          run: |
+            sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker-compose
+
+      - name: Deploy to local Docker Desktop
+        run: |
           docker-compose -f docker-compose.yml up -d
