@@ -53,13 +53,30 @@ feign:
   hystrix:
     enabled: true
 
-# 断路器在调用失败超过 50% 且累计 100 次调用后进入打开状态，10 秒后尝试半开
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, info
+
 # 统一在 config 中管理
-#resilience4j:
-#  circuitbreaker:
-#    instances:
-#      myService:
-#        registerHealthIndicator: true
-#        slidingWindowSize: 100
-#        failureRateThreshold: 50
-#        waitDurationInOpenState: 10s
+resilience4j:
+  circuitbreaker:
+    instances:
+      account-service:
+        registerHealthIndicator: true
+        slidingWindowSize: 100
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+  # 超时配置
+  timelimiter:
+    instances:
+      account-service:
+        timeoutDuration: 2s
+  # 线程池配置
+  thread-pool-bulkhead:
+    instances:
+      account-service:
+        maxThreadPoolSize: 50
+        coreThreadPoolSize: 20
+        queueCapacity: 100

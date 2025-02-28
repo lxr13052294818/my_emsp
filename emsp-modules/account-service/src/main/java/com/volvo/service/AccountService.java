@@ -58,38 +58,32 @@ public class AccountService {
      * @param id
      * @return
      */
-    public AccountVO getAccount(Long id) {
-        // 远程调用
-        CompletionStage<RR> card = this.getCardFuture(id);
-        card.thenAccept(rr -> {
-            System.out.println("r=========" + rr);
+    @CircuitBreaker(name = "account-service", fallbackMethod = "getAccountFallback")
+    @TimeLimiter(name = "account-service", fallbackMethod = "getAccountFallback")
+    public CompletionStage<AccountVO> getAccount(Long id) {
+        return CompletableFuture.supplyAsync(() -> {
+            System.out.println("getAccountFuture =========== " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            // 远程调用
+            RR card = cardClient.createCard(CardDTO.builder()
+                    .build());
+            System.out.println("getCardFuture =========== " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+            // 账户查询
+            Account account = accountMapper.selectById(id);
+            if (account == null) {
+                return null;
+            }
+            // 转 AccountDTO
+            AccountVO accountVO = AccountVO.builder().build();
+            BeanUtils.copyProperties(account, accountVO);
+            return accountVO;
         });
-
-        // 账户查询
-        Account account = accountMapper.selectById(id);
-        if (account == null) {
-            return null;
-        }
-        // 转 AccountDTO
-        AccountVO accountVO = AccountVO.builder().build();
-        BeanUtils.copyProperties(account, accountVO);
-        return accountVO;
     }
 
-    @CircuitBreaker(name = "accountService", fallbackMethod = "getCardFutureFallback")
-    @TimeLimiter(name = "accountService")
-    public CompletionStage<RR> getCardFuture(Long id) {
+    public CompletionStage<AccountVO> getAccountFallback(Long id, Throwable e) {
         // 打印时间 yyyy-MM-dd HH:mm:ss
-        System.out.println("getCardFuture =========== " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        CardDTO dto = CardDTO.builder().build();
-        RR<String> rr = cardClient.createCard(dto);
-        return CompletableFuture.completedFuture(rr);
-    }
-
-    public AccountVO getCardFutureFallback(Long id, Throwable e) {
-        // 打印时间 yyyy-MM-dd HH:mm:ss
-        log.error("getCardFutureFallback =========== {}", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        return AccountVO.builder().build();
+        System.out.println("错了错了错了错了错了错了 =========== " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        return CompletableFuture.completedFuture(AccountVO.builder().build());
     }
 
     /**

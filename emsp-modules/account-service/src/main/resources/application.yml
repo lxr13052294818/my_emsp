@@ -33,9 +33,3 @@ spring:
         namespace: ${NACOS_NAMESPACE:emsp}
         group: ${NACOS_GROUP:dev}
         refreshable: true
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: refresh, health, info

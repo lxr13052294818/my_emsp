@@ -146,7 +146,6 @@
     </repositories>
 
     <modules>
-        <module>emsp-common/emsp-common-config</module>
         <module>emsp-common/emsp-common-tools</module>
         <module>emsp-api/account-api</module>
         <module>emsp-api/card-api</module>
