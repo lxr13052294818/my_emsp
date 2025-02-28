@@ -54,11 +54,12 @@ feign:
     enabled: true
 
 # 断路器在调用失败超过 50% 且累计 100 次调用后进入打开状态，10 秒后尝试半开
-resilience4j:
-  circuitbreaker:
-    instances:
-      myService:
-        registerHealthIndicator: true
-        slidingWindowSize: 100
-        failureRateThreshold: 50
-        waitDurationInOpenState: 10s
+# 统一在 config 中管理
+#resilience4j:
+#  circuitbreaker:
+#    instances:
+#      myService:
+#        registerHealthIndicator: true
+#        slidingWindowSize: 100
+#        failureRateThreshold: 50
+#        waitDurationInOpenState: 10s

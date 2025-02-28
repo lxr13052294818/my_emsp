@@ -16,6 +16,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+
 /**
  * 描述:
  *
@@ -55,15 +58,14 @@ public class AccountService {
      * @param id
      * @return
      */
-    @CircuitBreaker(name = "accountService", fallbackMethod = "getAccountFallback")
-    @Retry(name = "accountService")
-    @TimeLimiter(name = "accountService")
-    @RateLimiter(name = "accountService")
     public AccountVO getAccount(Long id) {
-        CardDTO dto = CardDTO.builder().build();
-        RR<String> rr = cardClient.createCard(dto);
-        System.out.println("rr=================" + rr);
+        // 远程调用
+        CompletionStage<RR> card = this.getCardFuture(id);
+        card.thenAccept(rr -> {
+            System.out.println("r=========" + rr);
+        });
 
+        // 账户查询
         Account account = accountMapper.selectById(id);
         if (account == null) {
             return null;
@@ -74,6 +76,16 @@ public class AccountService {
         return accountVO;
     }
 
+    @TimeLimiter(name = "accountService")
+    @CircuitBreaker(name = "accountService", fallbackMethod = "getCardFutureFallback")
+    @Retry(name = "accountService")
+    @RateLimiter(name = "accountService")
+    public CompletionStage<RR> getCardFuture(Long id) {
+        CardDTO dto = CardDTO.builder().build();
+        RR<String> rr =cardClient.createCard(dto);
+        return CompletableFuture.completedFuture(rr);
+    }
+
     /**
      * 获取账户回退
      *
@@ -81,8 +93,8 @@ public class AccountService {
      * @param e
      * @return
      */
-    public AccountVO getAccountFallback(Long id, Throwable e) {
-        log.error("getAccountFallback: {}", e.getMessage());
+    public AccountVO getCardFutureFallback(Long id, Throwable e) {
+        log.error("getCardFutureFallback: {}", e.getMessage());
         return AccountVO.builder().build();
     }
 

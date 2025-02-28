@@ -22,6 +22,8 @@ jobs:
       # 配置 Maven 使用阿里云的仓库
       - name: Set up Maven settings for Aliyun
         run: |
+          # 存在则删除
+          rm -rf ~/.m2
           mkdir -p ~/.m2
           echo "<settings>
             <servers>
