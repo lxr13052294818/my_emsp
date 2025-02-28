@@ -8,14 +8,14 @@ import com.volvo.model.dto.AccountDTO;
 import com.volvo.model.vo.AccountVO;
 import com.volvo.model.vo.RR;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
-import io.github.resilience4j.retry.annotation.Retry;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
@@ -76,25 +76,19 @@ public class AccountService {
         return accountVO;
     }
 
-    @TimeLimiter(name = "accountService")
     @CircuitBreaker(name = "accountService", fallbackMethod = "getCardFutureFallback")
-    @Retry(name = "accountService")
-    @RateLimiter(name = "accountService")
+    @TimeLimiter(name = "accountService")
     public CompletionStage<RR> getCardFuture(Long id) {
+        // 打印时间 yyyy-MM-dd HH:mm:ss
+        System.out.println("getCardFuture =========== " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         CardDTO dto = CardDTO.builder().build();
-        RR<String> rr =cardClient.createCard(dto);
+        RR<String> rr = cardClient.createCard(dto);
         return CompletableFuture.completedFuture(rr);
     }
 
-    /**
-     * 获取账户回退
-     *
-     * @param id
-     * @param e
-     * @return
-     */
     public AccountVO getCardFutureFallback(Long id, Throwable e) {
-        log.error("getCardFutureFallback: {}", e.getMessage());
+        // 打印时间 yyyy-MM-dd HH:mm:ss
+        log.error("getCardFutureFallback =========== {}", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         return AccountVO.builder().build();
     }
 

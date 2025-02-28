@@ -26,6 +26,12 @@ public class CardController {
      */
     @PostMapping
     public RR<String> createCard(@RequestBody CardDTO cardDTO) {
+        // 睡眠 5 秒
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return RR.ok("创建成功");
     }
 }
