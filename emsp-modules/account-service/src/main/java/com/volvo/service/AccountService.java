@@ -1,5 +1,9 @@
 package com.volvo.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.volvo.client.CardClient;
 import com.volvo.entity.Account;
 import com.volvo.mapper.AccountMapper;
@@ -27,7 +31,7 @@ import java.util.concurrent.CompletionStage;
  */
 @Service
 @Slf4j
-public class AccountService {
+public class AccountService extends ServiceImpl<AccountMapper, Account> {
 
     @Autowired
     private AccountMapper accountMapper;
@@ -104,5 +108,28 @@ public class AccountService {
         if (accountMapper.updateById(account) < 1) {
             log.error("更改账户状态失败: {}", account);
         }
+    }
+
+    /**
+     * 账户分页
+     *
+     * @return
+     */
+    public IPage<AccountVO> accountList() {
+        // page
+        int page = 1;
+        int size = 10;
+        // 分页器
+        Page<Account> pageObj = new Page<>(page, size);
+        // 分页查询
+        IPage<Account> pageResult = page(pageObj, Wrappers.<Account>lambdaQuery()
+                .select(Account::getId, Account::getEmail, Account::getStatus)
+                .orderByDesc(Account::getId));
+        // 转 AccountVO
+        return pageResult.convert(account -> AccountVO.builder()
+                .id(account.getId())
+                .email(account.getEmail())
+                .status(account.getStatus())
+                .build());
     }
 }

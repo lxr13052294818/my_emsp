@@ -1,5 +1,6 @@
 package com.volvo.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.volvo.model.dto.AccountDTO;
 import com.volvo.model.vo.AccountVO;
 import com.volvo.model.vo.RR;
@@ -64,5 +65,15 @@ public class AccountController {
     public RR<String> changeAccountStatus(@PathVariable Long id, @RequestParam String status) {
         accountService.changeAccountStatus(id, status);
         return RR.ok("更改成功");
+    }
+
+    /**
+     * 分页查询
+     *
+     * @return
+     */
+    @GetMapping("/page")
+    public RR<IPage> page() {
+        return RR.ok(accountService.accountList());
     }
 }
