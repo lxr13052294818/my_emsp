@@ -86,9 +86,14 @@
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-extension</artifactId>
         </dependency>
     </dependencies>
 
@@ -139,6 +144,7 @@
     </repositories>
 
     <modules>
+        <module>emsp-common/emsp-common-config</module>
         <module>emsp-common/emsp-common-tools</module>
         <module>emsp-api/account-api</module>
         <module>emsp-api/card-api</module>
