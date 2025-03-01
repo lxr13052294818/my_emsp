@@ -9,9 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 /**
  * 描述: 账户管理
  *
@@ -50,9 +47,7 @@ public class AccountController {
     public RR<AccountVO> getAccount(@PathVariable Long id) {
         System.out.println("url===============" + url);
         try {
-            AccountVO accountVO =accountService.getAccount(id).toCompletableFuture().get();
-            System.out.println("AccountVO啊啊啊啊啊啊 =========== " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            return RR.ok(accountVO);
+            return RR.ok(accountService.getAccount(id).toCompletableFuture().get());
         } catch (Throwable e) {
             e.printStackTrace();
             return RR.fail("查询失败");

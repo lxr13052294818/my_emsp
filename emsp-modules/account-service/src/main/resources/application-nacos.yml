@@ -70,9 +70,12 @@ resilience4j:
         waitDurationInOpenState: 10s
   # 超时配置
   timelimiter:
+    configs:
+      default:
+        timeoutDuration: 2s
     instances:
       account-service:
-        timeoutDuration: 2s
+        timeoutDuration: 4s
   # 线程池配置
   thread-pool-bulkhead:
     instances:
