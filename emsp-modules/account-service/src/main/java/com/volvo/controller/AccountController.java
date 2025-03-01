@@ -5,10 +5,14 @@ import com.volvo.model.dto.AccountDTO;
 import com.volvo.model.vo.AccountVO;
 import com.volvo.model.vo.RR;
 import com.volvo.service.AccountService;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * 描述: 账户管理
@@ -23,9 +27,10 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
-
     @Value("${spring.datasource.url}")
     private String url;
+    @Autowired
+    private RedissonClient redissonClient;
 
     /**
      * 创建账户
@@ -75,5 +80,34 @@ public class AccountController {
     @GetMapping("/page")
     public RR<IPage> page() {
         return RR.ok(accountService.accountList());
+    }
+
+    /**
+     * redissonClient 测试
+     *
+     * @return
+     */
+    @GetMapping("/redisson")
+    public RR<String> redisson() {
+        RLock lock = redissonClient.getLock("lock");
+        try {
+            if (lock.tryLock(1, 20, TimeUnit.SECONDS)) {
+                try {
+                    System.out.println("获取锁：成功" + Thread.currentThread().getName());
+                    // 睡眠 10 秒
+                    Thread.sleep(10000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    lock.unlock();
+                    System.out.println("unlock" + Thread.currentThread().getName());
+                }
+            } else {
+                System.out.println("获取锁：失败" + Thread.currentThread().getName());
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        return RR.ok("redissonClient 测试");
     }
 }
