@@ -1,17 +1,21 @@
 spring:
   datasource:
-    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/my_emsp?useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai}
+    url: ${MYSQL_URL:jdbc:mysql://127.0.0.1:3306/my_emsp?useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai}
     username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:lxr123$!}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    # 启用 Seata 数据源代理（必须配置）
+    auto-commit: false
+    hikari:
+      auto-commit: false
   redis:
-    host: ${REDIS_HOST:localhost}
+    host: ${REDIS_HOST:127.0.0.1}
     port: ${REDIS_PORT:6379}
     database: ${REDIS_DATABASE:0}
   redisson:
     config:
       single:
-        address: ${REDIS_HOST:localhost}:${REDIS_PORT:6379}
+        address: ${REDIS_HOST:127.0.0.1}:${REDIS_PORT:6379}
 
 knife4j:
   enable: true
@@ -44,7 +48,7 @@ mybatis-plus:
 
 logging:
   level:
-    org.springframework.web: INFO  # 开发环境日志级别设置为 INFO
+    org.springframework.web: DEBUG  # 开发环境日志级别设置为 INFO
     com.volvo.accountservice: DEBUG  # 开发环境开启 DEBUG 级别的日志
   file:
     name: account-service-dev.log  # 开发环境日志文件名
@@ -83,3 +87,77 @@ resilience4j:
         maxThreadPoolSize: 50
         coreThreadPoolSize: 20
         queueCapacity: 100
+
+#seata:
+#  application-id: ${SEATA_APPLICATION_ID:seata-server}
+#  tx-service-group: ${SEATA_TX_SERVICE_GROUP:dev}
+#  registry:
+#    type: nacos
+#    nacos:
+#      server-addr: ${SEATA_NACOS_SERVER_ADDR:127.0.0.1:8848}
+#      namespace: ${SEATA_NACOS_NAMESPACE:emsp}
+#      username: ${SEATA_NACOS_USERNAME:nacos}
+#      password: ${SEATA_NACOS_PASSWORD:nacos}
+#  config:
+#    type: nacos
+#    nacos:
+#      server-addr: ${SEATA_NACOS_SERVER_ADDR:127.0.0.1:8848}
+#      namespace: ${SEATA_NACOS_NAMESPACE:emsp}
+#      group: ${SEATA_NACOS_GROUP:dev}
+
+
+seata:
+  # 基础配置
+  enabled: true
+  application-id: seata-server
+  tx-service-group: default_tx_group
+  cluster: default
+  # 服务端配置
+  service:
+    vgroup-mapping:
+      default_tx_group: default  # 事务组映射到默认集群
+    disable-global-transaction: false  # 启用全局事务
+  registry:
+    type: nacos
+    nacos:
+      server-addr: 127.0.0.1:8848
+      namespace: emsp
+      group: dev
+      username: nacos
+      password: nacos
+  config:
+    type: nacos
+    nacos:
+      server-addr: 127.0.0.1:8848
+      namespace: emsp
+      group: dev
+  #      data-id: seata-server.yaml
+  # 客户端特有配置
+  client:
+    rm:
+      report-success-enable: false  # 是否上报成功状态
+      async-commit-buffer-limit: 10000  # 异步提交缓存限制
+      lock:
+        retry-interval: 10   # 重试间隔(ms)
+        retry-times: 30      # 重试次数
+        retry-policy-branch-rollback-on-conflict: true  # 分支冲突时重试
+    tm:
+      commit-retry-count: 5     # 提交重试次数
+      rollback-retry-count: 5   # 回滚重试次数
+    undo:
+      data-validation: true  # 开启undo数据校验
+      log-serialization: jackson  # undo日志序列化方式
+      log-table: undo_log    # undo日志表名
+      only-care-update-columns: true  # 仅关注变更字段
+  # 事务日志存储配置
+  log:
+    exception-rate: 100  # 异常日志记录百分比
+  # 是否启用数据源自动代理（必须开启）
+  enable-auto-data-source-proxy: true
+
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: account-producer-group
+  consumer:
+    group: account-consumer-group

@@ -1,17 +1,17 @@
 spring:
   datasource:
-    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/my_emsp?useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai}
+    url: ${MYSQL_URL:jdbc:mysql://127.0.0.1:3306/my_emsp?useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Shanghai}
     username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:lxr123$!}
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
-    host: ${REDIS_HOST:localhost}
+    host: ${REDIS_HOST:127.0.0.1}
     port: ${REDIS_PORT:6379}
     database: ${REDIS_DATABASE:0}
   redisson:
     config:
       single:
-        address: ${REDIS_HOST:localhost}:${REDIS_PORT:6379}
+        address: ${REDIS_HOST:127.0.0.1}:${REDIS_PORT:6379}
 
 knife4j:
   enable: true
@@ -52,3 +52,21 @@ logging:
 feign:
   hystrix:
     enabled: true
+
+seata:
+  application-id: ${SEATA_APPLICATION_ID:seata-server}
+  tx-service-group: ${SEATA_TX_SERVICE_GROUP:dev}
+  registry:
+    type: nacos
+    nacos:
+      server-addr: ${SEATA_NACOS_SERVER_ADDR:127.0.0.1:8848}
+      namespace: ${SEATA_NACOS_NAMESPACE:emsp}
+      group: ${SEATA_NACOS_GROUP:dev}
+      username: ${SEATA_NACOS_USERNAME:nacos}
+      password: ${SEATA_NACOS_PASSWORD:nacos}
+  config:
+    type: nacos
+    nacos:
+      server-addr: ${SEATA_NACOS_SERVER_ADDR:127.0.0.1:8848}
+      namespace: ${SEATA_NACOS_NAMESPACE:emsp}
+      group: ${SEATA_NACOS_GROUP:dev}

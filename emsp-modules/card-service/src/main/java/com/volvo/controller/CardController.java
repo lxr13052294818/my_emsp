@@ -2,6 +2,9 @@ package com.volvo.controller;
 
 import com.volvo.model.dto.CardDTO;
 import com.volvo.model.vo.RR;
+import com.volvo.service.CardService;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RefreshScope
 @RequestMapping("/card")
 public class CardController {
+    @Autowired
+    private CardService cardService;
 
     /**
      * 创建账户
@@ -33,5 +38,18 @@ public class CardController {
             e.printStackTrace();
         }
         return RR.ok("创建成功");
+    }
+
+    /**
+     * 保存卡片
+     *
+     * @param cardDTO
+     * @return
+     */
+    @PostMapping("/save")
+    @ApiOperation(value = "保存卡片")
+    public RR<String> saveCard(@RequestBody CardDTO cardDTO) {
+        cardService.saveCard();
+        return RR.ok("保存成功");
     }
 }

@@ -67,10 +67,6 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
         </dependency>
         <dependency>
@@ -94,6 +90,11 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-extension</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
     </dependencies>
 
@@ -148,6 +149,7 @@
         <module>emsp-common/emsp-common-tools</module>
         <module>emsp-api/account-api</module>
         <module>emsp-api/card-api</module>
+        <module>emsp-consumer/emsp-consumer-account</module>
         <module>emsp-base/gateway-service</module>
         <module>emsp-modules/account-service</module>
         <module>emsp-modules/card-service</module>

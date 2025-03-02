@@ -1,10 +1,12 @@
 package com.volvo.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.volvo.constant.AccountMsgConstant;
 import com.volvo.model.dto.AccountDTO;
 import com.volvo.model.vo.AccountVO;
 import com.volvo.model.vo.RR;
 import com.volvo.service.AccountService;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,8 @@ public class AccountController {
     private String url;
     @Autowired
     private RedissonClient redissonClient;
+    @Autowired
+    private RocketMQTemplate rocketMQTemplate;
 
     /**
      * 创建账户
@@ -109,5 +113,30 @@ public class AccountController {
             Thread.currentThread().interrupt();
         }
         return RR.ok("redissonClient 测试");
+    }
+
+    /**
+     * 测试 Seata
+     *
+     * @return
+     */
+    @GetMapping("/seata")
+    public RR<String> seataTest() {
+        accountService.seataTest();
+        return RR.ok("seata 测试");
+    }
+
+    /**
+     * 测试 rocketMQ
+     *
+     * @return
+     */
+    @GetMapping("/rocketMQ")
+    public RR<String> rocketMQ() {
+        rocketMQTemplate.convertAndSend(
+                AccountMsgConstant.ACCOUNT_TOPIC,
+                "hello rocketMQ=========="
+        );
+        return RR.ok("rocketMQ 测试");
     }
 }

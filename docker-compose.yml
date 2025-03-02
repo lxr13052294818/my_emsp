@@ -2,6 +2,9 @@ version: '3'
 services:
   mysql:
     image: mysql:8.0
+    container_name: mysql
+    volumes:
+      - ./mysql-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: 'lxr123$$!'
     ports:
@@ -11,6 +14,9 @@ services:
 
   redis:
     image: redis:6.2
+    container_name: redis
+    volumes:
+      - ./redis-data:/data
     ports:
       - "6379:6379"
     networks:
@@ -18,20 +24,55 @@ services:
 
   nacos:
     image: nacos/nacos-server:2.0.3
+    container_name: nacos-server
+    environment:
+      - MODE=standalone
     ports:
       - "8848:8848"
+    volumes:
+      - ./nacos-data:/home/nacos/nacos-data
     networks:
       - emsp-network
 
   jenkins:
     image: jenkins/jenkins:lts
+    container_name: jenkins
+    volumes:
+      - ./jenkins-home:/var/jenkins-home
     ports:
       - "8080:8080"
     networks:
       - emsp-network
 
+  rmqnamesrv:
+    image: apache/rocketmq:4.9.2
+    container_name: rmqnamesrv
+    volumes:
+      - /data/rocketmq/namesrv/logs:/home/rocketmq/logs
+    ports:
+      - "9876:9876"
+    command: sh mqnamesrv
+    networks:
+      - emsp-network
+
+  rmqbroker:
+    image: apache/rocketmq:4.9.2
+    container_name: rmqbroker
+    volumes:
+      - /data/rocketmq/broker/store:/home/rocketmq/store
+    ports:
+      - "10911:10911"
+      - "10909:10909"
+    environment:
+      - NAMESRV_ADDR=rmqnamesrv:9876
+    command: sh mqbroker -n namesrv:9876
+    depends_on:
+      - rmqnamesrv
+    networks:
+      - emsp-network
+
   gateway-service:
-    image: emsp-gateway-service:latest
+    image: liuxingrui/emsp-gateway-service:latest  # 指向 Docker Hub 镜像
     container_name: gateway-service
     ports:
       - "18888:8080"
@@ -45,7 +86,7 @@ services:
       - nacos
 
   account-service:
-    image: emsp-account-service:latest
+    image: liuxingrui/emsp-account-service:latest  # 指向 Docker Hub 镜像
     container_name: account-service
     ports:
       - "18081:8080"
@@ -57,6 +98,24 @@ services:
       - mysql
       - redis
       - nacos
+      - rmqbroker
+      - rmqnamesrv
+
+  card-service:
+    image: liuxingrui/emsp-card-service:latest   # 示例：也可指定版本
+    container_name: card-service
+    ports:
+      - "18082:8080"
+    environment:
+      - PROFILES_ACTIVE=nacos
+    networks:
+      - emsp-network
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+      - rmqbroker
+      - rmqnamesrv
 
 networks:
   emsp-network:
